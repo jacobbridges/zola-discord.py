@@ -11,6 +11,12 @@ client = discord.Client()
 @client.event
 async def on_ready():
     logger.info(f'Logged in as {client.user.name} #{client.user.id}')
+    setattr(client, 'zen', {})
+
+    # Attach all server emojis to the client for easy reference
+    client.zen['emoji_map'] = {}
+    for emoji in client.get_all_emojis():
+        client.zen['emoji_map'][emoji.name] = emoji
 
 
 @client.event
