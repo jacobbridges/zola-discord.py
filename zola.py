@@ -1,27 +1,17 @@
-import logging
-
 import discord
 import asyncio
 
-# Configure some logging
-logger = logging.getLogger('zola')
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('zola.log')
-fh.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.ERROR)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-fh.setFormatter(formatter)
-ch.setFormatter(formatter)
-logger.addHandler(fh)
-logger.addHandler(ch)
+from core.logger import logger
+from core.commands import all_commands
 
 # Create the discord client
 client = discord.Client()
 
+
 @client.event
 async def on_ready():
     logger.info(f'Logged in as {client.user.name} #{client.user.id}')
+
 
 @client.event
 async def on_message(message):
@@ -36,6 +26,10 @@ async def on_message(message):
     elif message.content.startswith('!sleep'):
         await asyncio.sleep(5)
         await client.send_message(message.channel, 'Done sleeping')
+    for command in all_commands:
+        command.client = client
+        if await command(message) is True:
+            return
 
 try:
     token = open('./token').read()
