@@ -14,7 +14,6 @@ async def command_clear(message, *args, **kwargs):
         # If no arguments were found for the command, clear the entire channel
         command_args = kwargs.get('command_args', [])
         if not command_args:
-            logger.debug('No command arguments found')
 
             # Get all the messages in the channel
             messages = client.logs_from(message.channel)
@@ -35,7 +34,6 @@ async def command_clear(message, *args, **kwargs):
         # If arguments were found for the command, do different things
         else:
             command_args = list(command_args)
-            logger.debug('Found command arguments: {}'.format(', '.join(map(str, command_args))))
 
             # If there is more than one argument, do nothing
             if len(command_args) > 1:
