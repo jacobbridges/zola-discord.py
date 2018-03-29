@@ -1,8 +1,9 @@
-import discord
 import asyncio
 
-from core.logger import logger
+import discord
+
 from core.commands import all_commands
+from core.logger import logger
 
 # Create the discord client
 client = discord.Client()
@@ -33,8 +34,7 @@ async def on_message(message):
         await asyncio.sleep(5)
         await client.send_message(message.channel, 'Done sleeping')
     for command in all_commands:
-        command.client = client
-        if await command(message) is True:
+        if await command(message, client) is True:
             return
 
 try:

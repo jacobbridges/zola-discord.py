@@ -6,13 +6,12 @@ from ..logger import logger
 
 @roles_one_of(['zola--utils'])
 @parse_command_args
-async def command_clear(message, *args, **kwargs):
-    client = command_clear.client
+async def command_clear(message, client, *args, **kwargs):
     if message.content.startswith('!clear'):
         logger.info('Run command !clear')
 
         # If no arguments were found for the command, clear the entire channel
-        command_args = kwargs.get('command_args', [])
+        command_args = kwargs.pop('command_args', [])
         if not command_args:
 
             # Get all the messages in the channel
