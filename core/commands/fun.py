@@ -62,3 +62,7 @@ async def command_slap(message, client, *args, **kwargs):
         ))
         return True
     return False
+
+
+async def command_color(message, client, *args, **kwargs):
+    return True

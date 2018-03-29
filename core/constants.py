@@ -1,3 +1,14 @@
+# -----------------------------------------------------------------------------
+# Channels
+DEVLOG_CHANNEL = '428757417535209472'
+
+
+# -----------------------------------------------------------------------------
+# Servers
+ZEN_SERVER = '425868388641013761'
+
+
+# -----------------------------------------------------------------------------
 # Items
 SLAPPABLE_STRINGS = [
     '{slapper} slaps {slappee} across the face with {item}. {reaction}',
@@ -13,6 +24,8 @@ SLAPPABLE_REACTIONS = [
     'Ouch..', 'Oww..', 'Oof!', ':porg:', ':rooWut:', ':rooBlank:'
 ]
 
+
+# -----------------------------------------------------------------------------
 # Gifs
 PARTY_HARDER_GIFS = [
     'https://pa1.narvii.com/6367/3f80a06c8094c4c412f8ceba44a969b057059ed8_hq.gif',
@@ -24,3 +37,10 @@ FAIL_GIFS = [
 ]
 
 
+# -----------------------------------------------------------------------------
+# Other
+ZOLA_EMBED_AUTHOR = dict(
+    name="Zola",
+    url="https://www.youtube.com/watch?v=E486XjhYHh8",
+    icon_url="https://img3.wikia.nocookie.net/__cb20140406081200/villains/images/e/e7/ZOLA.jpg"
+)
