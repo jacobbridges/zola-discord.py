@@ -16,6 +16,7 @@ zola.http_session = ClientSession(connector=TCPConnector(resolver=AsyncResolver(
 # Load extensions
 zola.load_extension('core.cogs.logging')
 zola.load_extension('core.cogs.events')
+zola.load_extension('core.cogs.utility')
 zola.load_extension('core.cogs.fun')
 
 token = open('./token').read()

@@ -36,21 +36,22 @@ class Events:
             help_command = (self.bot.get_command("help"),)
 
         if isinstance(e, BadArgument):
-            await ctx.send(f"Malformed function data: {e}\n")
+            await self.bot.say(f"Malformed function data: {e}\n")
             await ctx.invoke(*help_command)
         elif isinstance(e, UserInputError):
             await ctx.invoke(*help_command)
         elif isinstance(e, NoPrivateMessage):
-            await ctx.send("That function cannot be used in a private message.")
+            await self.bot.say("That function cannot be used in a private message.")
         elif isinstance(e, CommandInvokeError):
-            m = await ctx.send('Function failure. Creating a log of this failure..')
+            print(e)
+            m = await self.bot.send_message(ctx.message.channel, 'Function failure. Creating a log of this failure..')
             embed = Embed(description=f'{e}')
             embed.set_author(
                 name="Zola",
                 url="https://www.youtube.com/watch?v=E486XjhYHh8",
                 icon_url="https://img3.wikia.nocookie.net/__cb20140406081200/villains/images/e/e7/ZOLA.jpg"
             )
-            await self.bot.get_channel(DEVLOG_CHANNEL).send(embed=Embed)
+            await self.bot.send_message(self.bot.get_channel(DEVLOG_CHANNEL), embed=embed)
             await self.bot.edit_message(m, 'Function failure. Creating a log of this failure.. Done.')
             raise e.original
         log.error(f"COMMAND ERROR: '{e}'")
