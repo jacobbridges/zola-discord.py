@@ -55,6 +55,7 @@ class Utility(object):
         await self.bot.delete_messages(messages=messages)
 
     @group(name='id', pass_context=True)
+    @with_role(ZOLA_UTILS_ROLE)
     async def id_command(self, ctx: Context):
         """
         Get the Discord ID by name.
@@ -64,6 +65,7 @@ class Utility(object):
             await ctx.invoke(self.bot.get_command('help'), 'id')
 
     @id_command.command(name='role', ignore_extra=True, pass_context=True)
+    @with_role(ZOLA_UTILS_ROLE)
     async def id_role_command(self, ctx: Context, role_name):
         """
         Get the Discord ID of a role.
