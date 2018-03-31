@@ -1,10 +1,11 @@
 import logging
 
 import pydash
-from discord import Server, Message, Member, User, Embed
+from discord import Embed
 from discord.ext.commands import Bot, command, Context, group
 
-from core.constants import ZEN_SERVER, COLOR_ROLES, UMM_ROLES, UMM_CHANNELS
+from core.constants import ZEN_SERVER, COLOR_ROLES, UMM_ROLES, UMM_CHANNELS, SLAPPABLE_STRINGS, SLAPPABLE_ITEMS, \
+    SLAPPABLE_REACTIONS
 
 logger = logging.getLogger(__name__)
 color_help = '''
@@ -77,9 +78,18 @@ class Fun(object):
         display_name = getattr(ctx.message.author, 'nick') or \
                        getattr(ctx.message.author, 'name')
 
+        embed = Embed(
+            title='Shhh..',
+            description='Welcome to Club Lewd, {}!'.format(display_name),
+            color=0xf400ab
+        )
+        embed.set_thumbnail(url='https://api.tumblr.com/v2/blog/mlsaw.tumblr.com/avatar/128.png')
+        # embed.add_field(name='New Commands', value='!c !cc !ccc', inline=False)
+        # TODO: Give users in lewd new commands
+
         await self.bot.send_message(
             server.get_channel(UMM_CHANNELS['lewd']),
-            u'Umm.. welcome to Club Lewd {}'.format(display_name)
+            embed=embed
         )
 
     @umm.command(name='leave', hidden=True, pass_context=True, no_pm=True)
@@ -158,6 +168,36 @@ class Fun(object):
                 server.get_channel(UMM_CHANNELS['extreme-lewd']),
                 u'Ummm.. {} left Club Bewb'.format(display_name)
             )
+
+    @command(name='slap', pass_context=True)
+    async def slap_command(self, ctx: Context, who=None):
+        """
+        Slap your neighbor or get slapped.
+        """
+
+        emoji_map = {e.name: e for e in self.bot.get_all_emojis()}
+
+        template = pydash.sample(SLAPPABLE_STRINGS)
+        reaction = pydash.sample(SLAPPABLE_REACTIONS)
+        if reaction.startswith(':'):
+            reaction = pydash.trim(reaction, ':')
+            reaction = emoji_map.get(reaction, 'Umm..')
+        item = pydash.sample(SLAPPABLE_ITEMS)
+        slappee = who
+        slapper = getattr(ctx.message.author, 'display_name', None) or \
+                  getattr(ctx.message.author, 'username', 'Zola')
+
+        # If the slappee wasn't specified, the slapper gets slapped
+        if not slappee:
+            slappee = slapper
+            slapper = 'Zola'
+
+        await self.bot.send_message(ctx.message.channel, template.format(
+            slapper=slapper,
+            slappee=slappee,
+            item=item,
+            reaction=reaction,
+        ))
 
 
 def setup(bot):
