@@ -1,7 +1,7 @@
 import logging
 
 import pydash
-from discord import Embed
+from discord import Embed, Member
 from discord.ext.commands import Bot, command, Context, group
 
 from core.constants import ZEN_SERVER, COLOR_ROLES, UMM_ROLES, UMM_CHANNELS, SLAPPABLE_STRINGS, SLAPPABLE_ITEMS, \
@@ -198,6 +198,24 @@ class Fun(object):
             item=item,
             reaction=reaction,
         ))
+
+    @command(no_pm=True, pass_context=True, hidden=True)
+    async def hug(self, context, intensity: int = 1):
+        """
+        Because everyone likes hugs!
+        """
+        name = '*{}*'.format(context.message.author.display_name)
+        if intensity <= 0:
+            msg = '(っ˘̩╭╮˘̩)っ' + name
+        elif intensity <= 3:
+            msg = '(っ´▽｀)っ' + name
+        elif intensity <= 6:
+            msg = '╰(*´︶`*)╯' + name
+        elif intensity <= 9:
+            msg = '(つ≧▽≦)つ' + name
+        elif intensity >= 10:
+            msg = '(づ￣ ³￣)づ{} ⊂(´・ω・｀⊂)'.format(name)
+        await self.bot.say(msg)
 
 
 def setup(bot):
