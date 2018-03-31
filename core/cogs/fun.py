@@ -1,7 +1,8 @@
 import logging
+from random import choice
 
 import pydash
-from discord import Embed, Member
+from discord import Embed
 from discord.ext.commands import Bot, command, Context, group
 
 from core.constants import ZEN_SERVER, COLOR_ROLES, UMM_ROLES, UMM_CHANNELS, SLAPPABLE_STRINGS, SLAPPABLE_ITEMS, \
@@ -199,8 +200,8 @@ class Fun(object):
             reaction=reaction,
         ))
 
-    @command(no_pm=True, pass_context=True, hidden=True)
-    async def hug(self, context, intensity: int = 1):
+    @command(no_pm=True, pass_context=True)
+    async def hug_command(self, context, intensity: int = 1):
         """
         Because everyone likes hugs!
         """
@@ -216,6 +217,13 @@ class Fun(object):
         elif intensity >= 10:
             msg = '(づ￣ ³￣)づ{} ⊂(´・ω・｀⊂)'.format(name)
         await self.bot.say(msg)
+
+    @command()
+    async def flip_command(self):
+        """
+        Flip a coin.
+        """
+        await self.bot.say('*flips a coin and... ' + choice(['HEADS!*', 'TAILS!*']))
 
 
 def setup(bot):
