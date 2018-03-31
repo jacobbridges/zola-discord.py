@@ -200,7 +200,7 @@ class Fun(object):
             reaction=reaction,
         ))
 
-    @command(no_pm=True, pass_context=True)
+    @command(name='hug', no_pm=True, pass_context=True)
     async def hug_command(self, context, intensity: int = 1):
         """
         Because everyone likes hugs!
@@ -218,7 +218,7 @@ class Fun(object):
             msg = '(づ￣ ³￣)づ{} ⊂(´・ω・｀⊂)'.format(name)
         await self.bot.say(msg)
 
-    @command()
+    @command(name='flip')
     async def flip_command(self):
         """
         Flip a coin.

@@ -1,6 +1,8 @@
 import logging
 
+import datetime
 import pydash
+import time
 from discord import Server
 from discord.ext.commands import Bot, command, Context, group
 
@@ -14,6 +16,7 @@ class Utility(object):
 
     def __init__(self, bot: Bot):
         self.bot = bot
+        self.stopwatches = {}
 
     @command(name='test', hidden=True, pass_context=True)
     async def test_command(self, ctx: Context):
@@ -76,6 +79,32 @@ class Utility(object):
                 return await self.bot.say(role.id)
 
         return await self.bot.say(f'No role found "{role_name}"')
+
+    @command(name='stopwatch', aliases=['sw'], pass_context=True)
+    async def stopwatch_command(self, ctx):
+        """
+        Starts/Stop a stopwatch.
+        """
+        author = ctx.message.author
+        if author.id not in self.stopwatches:
+            self.stopwatches[author.id] = int(time.perf_counter())
+            await self.bot.say(author.mention + ' - Stopwatch started!')
+        else:
+            tmp = abs(self.stopwatches[author.id] - int(time.perf_counter()))
+            tmp = str(datetime.timedelta(seconds=tmp))
+            await self.bot.say(author.mention + ' - Stopwatch stopped! Time: **' + tmp + '**')
+            self.stopwatches.pop(author.id, None)
+
+    @command(name='lmgtfy')
+    async def lmgtfy(self, *, search_terms: str):
+        """
+        Let me Google that for you.
+        """
+        search_terms = search_terms\
+            .replace('@everyone', '@\u200beveryone')\
+            .replace('@here', '@\u200bhere')\
+            .replace(' ', '+')
+        await self.bot.say('https://lmgtfy.com/?q={}'.format(search_terms))
 
 
 def setup(bot):
