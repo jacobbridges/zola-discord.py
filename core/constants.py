@@ -1,3 +1,7 @@
+from collections import OrderedDict
+
+from core.shortcuts import get_alias_list
+
 # -----------------------------------------------------------------------------
 # Channels
 DEVLOG_CHANNEL = '428757417535209472'
@@ -26,6 +30,23 @@ COLOR_ROLES = {
     'Irish Green': '426599807063425024',
     'Bright Greek': '426599967889817600',
 }
+GAME_ROLES = OrderedDict({
+    'League of Legends': '426600171871141889',
+    'LoL': '426600171871141889',
+    'Overwatch': '426600545839611904',
+    'World of Warcraft': '426600604169666561',
+    'WoW': '426600604169666561',
+    'Diablo 3': '426600640462979073',
+    'Minecraft': '426600724265172992',
+    'Path of Exile': '426600818779881477',
+    'PoE': '426600818779881477',
+    'Faeria': '427264910318370819',
+    'Heroes of the Storm': '429691521797849098',
+    'HotS': '429691521797849098',
+    'Hearthstone': '429693674482302976',
+    'Starcraft': '429691734348529666',
+})
+GAME_LIST_STRING = get_alias_list(GAME_ROLES)
 UMM_ROLES = {
     'umm': '427318409974513674',
     'ummm': '427318472272248844',

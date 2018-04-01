@@ -1,10 +1,10 @@
-from discord import Game
-from discord.ext.commands import Bot, when_mentioned_or
-
 from aiohttp import AsyncResolver, ClientSession, TCPConnector
+from discord import Game
+from discord.ext.commands import when_mentioned_or
 
+from core.zola import Zola
 
-zola = Bot(
+zola = Zola(
     command_prefix=when_mentioned_or('!', '>>> '),
     activity=Game(name='List of commands: !help'),
 )
@@ -18,9 +18,9 @@ zola.load_extension('core.cogs.logging')
 zola.load_extension('core.cogs.events')
 zola.load_extension('core.cogs.utility')
 zola.load_extension('core.cogs.fun')
+zola.load_extension('core.cogs.games')
 
 token = open('./token').read()
 zola.run(token)
 
 zola.http_session.close()  # Close the aiohttp session when the bot finishes running
-
