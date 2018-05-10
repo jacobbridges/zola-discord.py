@@ -1,22 +1,22 @@
 import logging
+from datetime import datetime
 
-import datetime
 import pydash
-import time
-from discord import Server
 from discord.ext.commands import Bot, command, Context, group
 
+from core.cogs.toolbox import StatefulCog
 from core.constants import ZEN_SERVER, ZOLA_UTILS_ROLE
 from core.decorators import with_role
+from core.models import Stopwatch
 
 logger = logging.getLogger(__name__)
 
 
-class Utility(object):
+class Utility(StatefulCog):
 
     def __init__(self, bot: Bot):
+        super(Utility, self).__init__()
         self.bot = bot
-        self.stopwatches = {}
 
     @command(name='test', hidden=True, pass_context=True)
     async def test_command(self, ctx: Context):
@@ -35,6 +35,20 @@ class Utility(object):
             placeholder,
             f'You have {len(my_messages)} messages.'
         )
+
+    @command(name='syncdb', hidden=True, pass_context=True)
+    @with_role(ZOLA_UTILS_ROLE)
+    async def sync_database(self, ctx: Context):
+        """
+        Create tables for all models.
+        """
+
+        db = await self.get_db()
+        await self.run_db_transactions(db, transactions=[
+            lambda: db.drop_tables([Stopwatch]),
+            lambda: db.create_tables([Stopwatch]),
+        ])
+        return await self.bot.say(f'Database synced successfully.')
 
     @command(name='clear', pass_context=True)
     @with_role(ZOLA_UTILS_ROLE)
@@ -85,15 +99,18 @@ class Utility(object):
         """
         Starts/Stop a stopwatch.
         """
+
         author = ctx.message.author
-        if author.id not in self.stopwatches:
-            self.stopwatches[author.id] = int(time.perf_counter())
+        stopwatch = await self.thread_it(lambda: Stopwatch.get_or_none(Stopwatch.created_by == author.id))
+
+        if not stopwatch:
+            await self.thread_it(lambda: Stopwatch.create(created_on=datetime.now(), created_by=author.id))
             await self.bot.say(author.mention + ' - Stopwatch started!')
         else:
-            tmp = abs(self.stopwatches[author.id] - int(time.perf_counter()))
-            tmp = str(datetime.timedelta(seconds=tmp))
-            await self.bot.say(author.mention + ' - Stopwatch stopped! Time: **' + tmp + '**')
-            self.stopwatches.pop(author.id, None)
+            stopwatch.stopped_on = datetime.now()
+            await self.thread_it(lambda: stopwatch.save())
+            await self.bot.say(author.mention + ' - Stopwatch stopped! Time: **' + stopwatch.result + '**')
+            await self.thread_it(lambda: stopwatch.delete_instance())
 
     @command(name='lmgtfy')
     async def lmgtfy(self, *, search_terms: str):
