@@ -45,6 +45,7 @@ GAME_ROLES = OrderedDict({
     'HotS': '429691521797849098',
     'Hearthstone': '429693674482302976',
     'Starcraft': '429691734348529666',
+    'Destiny': '442744450272198656',
 })
 GAME_LIST_STRING = get_alias_list(GAME_ROLES)
 UMM_ROLES = {
