@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../futhead-discord.py/.idea/futhead-discord.py.iml" filepath="$PROJECT_DIR$/../futhead-discord.py/.idea/futhead-discord.py.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/zola-discord.py.iml" filepath="$PROJECT_DIR$/.idea/zola-discord.py.iml" />
     </modules>
   </component>

@@ -37,15 +37,19 @@ GAME_ROLES = OrderedDict({
     'World of Warcraft': '426600604169666561',
     'WoW': '426600604169666561',
     'Diablo 3': '426600640462979073',
+    'D3': '426600640462979073',
     'Minecraft': '426600724265172992',
     'Path of Exile': '426600818779881477',
     'PoE': '426600818779881477',
-    'Faeria': '427264910318370819',
     'Heroes of the Storm': '429691521797849098',
     'HotS': '429691521797849098',
     'Hearthstone': '429693674482302976',
     'Starcraft': '429691734348529666',
     'Destiny': '442744450272198656',
+    'Stardew Valley': '444282951224786945',
+    'Stardew': '444282951224786945',
+    'Magic the Gathering': '459922821599068160',
+    'MtG': '459922821599068160',
 })
 GAME_LIST_STRING = get_alias_list(GAME_ROLES)
 UMM_ROLES = {

@@ -17,7 +17,7 @@ class Logging:
         self.bot = bot
 
     async def on_ready(self):
-        log.info("Bot connected!")
+        log.info('Bot connected!')
 
         dev_log = self.bot.get_channel(DEVLOG_CHANNEL)
         await self.bot.send_message(dev_log, 'Connected!')
@@ -25,4 +25,4 @@ class Logging:
 
 def setup(bot):
     bot.add_cog(Logging(bot))
-    log.info("Cog loaded: Logging")
+    log.info('Cog loaded: Logging')

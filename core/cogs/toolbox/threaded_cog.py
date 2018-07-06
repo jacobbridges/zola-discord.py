@@ -8,7 +8,8 @@ class ThreadedCog(object):
     """
     max_workers = 5
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(ThreadedCog, self).__init__(*args, **kwargs)
         self.thread_pool = ThreadPoolExecutor(max_workers=5)
 
     async def thread_it(self, func, *args):

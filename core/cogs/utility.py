@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+import asyncio
 import pydash
 from discord.ext.commands import Bot, command, Context, group
 
@@ -52,7 +53,7 @@ class Utility(StatefulCog):
 
     @command(name='clear', pass_context=True)
     @with_role(ZOLA_UTILS_ROLE)
-    async def clear_command(self, ctx: Context, limit=10000):
+    async def clear_command(self, ctx: Context, limit=1000):
         """
         Clear messages from a channel.
         """
@@ -69,7 +70,7 @@ class Utility(StatefulCog):
 
         messages = [m async for m in
                     self.bot.logs_from(ctx.message.channel, limit=limit)]
-        await self.bot.delete_messages(messages=messages)
+        [await self.bot.delete_message(m) for m in messages]
 
     @group(name='id', pass_context=True)
     @with_role(ZOLA_UTILS_ROLE)
@@ -83,11 +84,12 @@ class Utility(StatefulCog):
 
     @id_command.command(name='role', ignore_extra=True, pass_context=True)
     @with_role(ZOLA_UTILS_ROLE)
-    async def id_role_command(self, ctx: Context, role_name):
+    async def id_role_command(self, ctx: Context, *role_name):
         """
         Get the Discord ID of a role.
         """
 
+        role_name = ' '.join(role_name)
         for role in self.bot.get_server(ZEN_SERVER).roles:
             if role_name == role.name:
                 return await self.bot.say(role.id)

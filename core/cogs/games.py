@@ -22,7 +22,7 @@ class GameHalls(object):
     def __init__(self, bot: Zola):
         self.bot = bot
 
-    @command(name='gamelist', aliases=['glist', 'games'])
+    @command(name='gamelist', aliases=['glist', 'games', 'gamehalls'])
     async def list_command(self):
         """
         List the available game halls.
@@ -30,8 +30,8 @@ class GameHalls(object):
         await self.bot.say('Available game halls: {}'.format(GAME_LIST_STRING))
 
     @command(name='gamejoin', aliases=['gjoin'], pass_context=True,
-             ignore_extra=True, no_pm=True)
-    async def join_command(self, ctx: Context, game):
+             ignore_extra=False, no_pm=True)
+    async def join_command(self, ctx: Context, *_):
         """
         Join a gaming hall.
         """

@@ -19,6 +19,7 @@ zola.load_extension('core.cogs.events')
 zola.load_extension('core.cogs.utility')
 zola.load_extension('core.cogs.fun')
 zola.load_extension('core.cogs.games')
+zola.load_extension('core.cogs.moderation')
 
 token = open('./token').read()
 zola.run(token)
