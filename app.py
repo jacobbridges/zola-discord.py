@@ -21,7 +21,7 @@ zola.load_extension('core.cogs.fun')
 zola.load_extension('core.cogs.games')
 zola.load_extension('core.cogs.moderation')
 
-token = open('./token').read()
+token = open('./token').readline().strip()
 zola.run(token)
 
 zola.http_session.close()  # Close the aiohttp session when the bot finishes running
