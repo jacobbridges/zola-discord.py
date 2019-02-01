@@ -16,6 +16,7 @@ pycares==2.3.0
 pydash==4.5.0
 python-dateutil==2.7.2
 python-magic==0.4.15
+pytube==9.4.0
 six==1.11.0
 websockets==3.4
 wincertstore==0.2

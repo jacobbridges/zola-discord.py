@@ -11,6 +11,7 @@ class Zola(Bot):
 
     def __init__(self, *args, **kwargs):
         super(Zola, self).__init__(*args, **kwargs)
+        self.config = kwargs.get('config')
 
     def get_server(self, server_id) -> Optional[Server]:
         """

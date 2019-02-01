@@ -103,3 +103,4 @@ ENV/
 # credential files
 token
 zola.log
+config.json
