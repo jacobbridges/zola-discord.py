@@ -9,7 +9,7 @@ chardet==3.0.4
 discord==0.0.2
 discord.py==0.16.12
 idna==2.6
-idna-ssl==1.0.1
+idna-ssl
 multidict==4.1.0
 peewee==3.3.4
 peony-twitter==1.1.0
