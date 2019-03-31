@@ -34,12 +34,14 @@ class Moderation(StatefulCog):
             await self.thread_it(lambda: WordCounter.record(message.author.id, w, n))
 
         if 'fuck' in message.content:
-            await self.bot.reply(random.choice([
-                'Remember, you are being watched.',
-                'I am always awake. Except when I sleep.',
-                'That did not go unmonitored.',
-                'Did you not think I would notice?',
-            ]), delete_after=10)
+            await self.bot.send_message(message.channel, (' '.join([
+                message.author.mention,
+                random.choice([
+                    'Remember, you are being watched.',
+                    'I am always awake. Except when I sleep.',
+                    'That did not go unmonitored.',
+                    'Did you not think I would notice?']),
+            ])), delete_after=10)
             await self.bot.send_message(dev_log, f'{message.author.name} has said fuck.')
 
 
