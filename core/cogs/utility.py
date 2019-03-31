@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 
 import pydash
+from discord import Embed
 from discord.ext.commands import Bot, command, Context, group
 from google.cloud import firestore
 
@@ -126,13 +127,24 @@ class Utility(StatefulCog):
             .replace(' ', '+')
         await self.bot.say('https://lmgtfy.com/?q={}'.format(search_terms))
 
-    @command(name='ftest')
-    async def ftest(self, *args, **kwargs):
+    @command(name='wptest')
+    async def wptest(self, *args, **kwargs):
         """
         Test google firestore access
         """
-        wp = await self.thread_it(lambda: list(self.fire.collection('hoard.photos.wallpapers').where('tags', 'array_contains', 'nsfw').get()))
-        await self.bot.say(' '.join([w.storage_path for w in wp]))
+        wp = await self.thread_it(lambda: list(
+            self.fire.collection('hoard').document('photos').collection('wallpapers')
+                .where('tags', 'array_contains', 'nsfw')
+                .limit(1)
+                .get()))[0]
+
+        embed = Embed()
+        embed.set_image(url='https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path'))
+        embed.add_field(
+            name='WP Test',
+            value='Just a test',
+        )
+        await self.bot.say(embed=embed)
 
 
 def setup(bot):
