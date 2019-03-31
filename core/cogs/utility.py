@@ -8,7 +8,7 @@ from discord.ext.commands import Bot, command, Context, group
 from core.cogs.toolbox import StatefulCog
 from core.constants import ZEN_SERVER, ZOLA_UTILS_ROLE
 from core.decorators import with_role
-from core.models import Stopwatch
+from core.models import Stopwatch, WordCounter
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +46,8 @@ class Utility(StatefulCog):
 
         db = await self.get_db()
         await self.run_db_transactions(db, transactions=[
-            lambda: db.drop_tables([Stopwatch]),
-            lambda: db.create_tables([Stopwatch]),
+            lambda: db.drop_tables([Stopwatch, WordCounter]),
+            lambda: db.create_tables([Stopwatch, WordCounter]),
         ])
         return await self.bot.say(f'Database synced successfully.')
 
