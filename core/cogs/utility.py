@@ -1,4 +1,5 @@
 import logging
+import random
 from datetime import datetime
 
 import pydash
@@ -132,11 +133,10 @@ class Utility(StatefulCog):
         """
         Test google firestore access
         """
-        wp = await self.thread_it(lambda: list(
+        wp = await self.thread_it(lambda: random.choice(list(
             self.fire.collection('hoard').document('photos').collection('wallpapers')
                 .where('tags', 'array_contains', 'nsfw')
-                .limit(1)
-                .get())[0])
+                .get())))
 
         embed = Embed()
         embed.set_image(url='https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path'))
