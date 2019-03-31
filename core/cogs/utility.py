@@ -136,7 +136,7 @@ class Utility(StatefulCog):
             self.fire.collection('hoard').document('photos').collection('wallpapers')
                 .where('tags', 'array_contains', 'nsfw')
                 .limit(1)
-                .get()))[0]
+                .get())[0])
 
         embed = Embed()
         embed.set_image(url='https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path'))
