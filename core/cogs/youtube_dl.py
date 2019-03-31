@@ -48,7 +48,7 @@ class YoutubeDl(StatefulCog):
         # Download the video
         output_path = os.path.join(
             self.bot.config['youtube_dl']['output_path'],
-            author.name
+            author.name.replace(' ', '_')
         )
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -56,7 +56,7 @@ class YoutubeDl(StatefulCog):
         video_filename = await self.thread_it(download, arg, output_path)
 
         # Construct link to file
-        video_link = '/'.join([self.bot.config['data_host'], author.name, video_filename])
+        video_link = '/'.join([self.bot.config['data_host'], author.name.replace(' ', '_'), video_filename])
         await self.bot.say(f'{author.mention}, your video is ready! {video_link}')
 
 
