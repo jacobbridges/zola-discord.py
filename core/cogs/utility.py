@@ -1,9 +1,9 @@
 import logging
 from datetime import datetime
 
-import asyncio
 import pydash
 from discord.ext.commands import Bot, command, Context, group
+from google.cloud import firestore
 
 from core.cogs.toolbox import StatefulCog
 from core.constants import ZEN_SERVER, ZOLA_UTILS_ROLE
@@ -18,6 +18,7 @@ class Utility(StatefulCog):
     def __init__(self, bot: Bot):
         super(Utility, self).__init__()
         self.bot = bot
+        self.fire = firestore.Client()
 
     @command(name='test', hidden=True, pass_context=True)
     async def test_command(self, ctx: Context):
@@ -124,6 +125,14 @@ class Utility(StatefulCog):
             .replace('@here', '@\u200bhere')\
             .replace(' ', '+')
         await self.bot.say('https://lmgtfy.com/?q={}'.format(search_terms))
+
+    @command(name='lmgtfy')
+    async def ftest(self, *args, **kwargs):
+        """
+        Test google firestore access
+        """
+        wp = await self.thread_it(lambda: list(self.fire.collection('hoard.photos.wallpapers').where('tags', 'array_contains', 'nsfw').get()))
+        await self.bot.say(' '.join([w.storage_path for w in wp]))
 
 
 def setup(bot):
