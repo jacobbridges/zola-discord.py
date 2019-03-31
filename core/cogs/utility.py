@@ -126,7 +126,7 @@ class Utility(StatefulCog):
             .replace(' ', '+')
         await self.bot.say('https://lmgtfy.com/?q={}'.format(search_terms))
 
-    @command(name='lmgtfy')
+    @command(name='ftest')
     async def ftest(self, *args, **kwargs):
         """
         Test google firestore access
