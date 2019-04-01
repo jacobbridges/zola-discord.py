@@ -191,28 +191,29 @@ class Utility(StatefulCog):
         """
         Show how many times a user has said a certain word.
         """
-        print(user, word)
-        user = UserConverter(ctx, user).convert()
-        print(dir(user))
+        try:
+            member = UserConverter(ctx, user).convert()
+        except:
+            self.bot.send_message(ctx.message.channel, 'Could not find user matching the name "{}"'.format(member))
 
         if word is None:
             top_5_words = await self.thread_it(lambda: WordCounter.select()
-                .where(WordCounter.user_id==user.id)
+                .where(WordCounter.user_id==member.id)
                 .order_by(WordCounter.count.desc())
                 .limit(5))
-            response = '**Top 5 words for {}**'.format(user)
+            response = '**Top 5 words for {}**'.format(member.display_name)
             for record in top_5_words:
                 response += '\n{} - {}'.format(record.word, record.count)
             await self.bot.say(response)
         else:
             record = await self.thread_it(lambda: WordCounter.select()
-                .where((WordCounter.user_id==user.id) & (WordCounter.word==word.lower()))
+                .where((WordCounter.user_id==member.id) & (WordCounter.word==word.lower()))
                 .order_by(WordCounter.count.desc())
                 .get_or_none())
             if record:
-                await self.bot.say('{} has said "{}" {} times.'.format(user.display_name, record.word, record.count))
+                await self.bot.say('{} has said "{}" {} times.'.format(member.display_name, record.word, record.count))
             else:
-                await self.bot.say('{} has never said the word "{}"'.format(user.display_name, word))
+                await self.bot.say('{} has never said the word "{}"'.format(member.display_name, word))
 
 
 

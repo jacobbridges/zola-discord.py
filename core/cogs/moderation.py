@@ -25,7 +25,8 @@ class Moderation(StatefulCog):
 
     async def monitor(self, message: Message):
 
-        if message.author == self.bot.user: return
+        if message.author == self.bot.user: return  # Bot should ignore itself
+        if message.content.startswith('!'): return  # Ignore bot commands
         dev_log = self.bot.get_channel(DEVLOG_CHANNEL)
 
         words = self.all_word_regex.findall(message.content.lower())
