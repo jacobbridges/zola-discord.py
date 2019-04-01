@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pydash
 from discord import Embed
-from discord.ext.commands import Bot, command, Context, group
+from discord.ext.commands import Bot, command, Context, group, UserConverter
 from google.cloud import firestore
 
 from core.cogs.toolbox import StatefulCog
@@ -187,11 +187,23 @@ class Utility(StatefulCog):
         await self.bot.say('NSFW tag removed.')
 
     @command('showme', aliases=['sm'])
-    async def showme(self, *, user, word):
+    async def showme(self, *, user, word=None):
         """
         Show how many times a user has said a certain word.
         """
         print(user, word)
+        print(UserConverter(user))
+        return
+        if word is None:
+            top_5_words = self.thread_it(lambda: WordCounter.select()
+                .where(WordCounter.user_id==1)
+                .order_by(WordCounter.count.desc())
+                .limit(5))
+            response = '**Top 5 words for {}**'.format(user)
+            for record in top_5_words:
+                response += '\n{} - {}'.format(record.word, record.count)
+            await self.bot.say(response)
+
 
 
 def setup(bot):
