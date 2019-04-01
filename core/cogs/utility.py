@@ -186,6 +186,13 @@ class Utility(StatefulCog):
         wp.update({'nsfw': False, 'tags': tags})
         await self.bot.say('NSFW tag removed.')
 
+    @command('showme', aliases=['sm'])
+    async def showme(self, *, user, word):
+        """
+        Show how many times a user has said a certain word.
+        """
+        print(user, word)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
