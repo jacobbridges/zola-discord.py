@@ -192,17 +192,27 @@ class Utility(StatefulCog):
         Show how many times a user has said a certain word.
         """
         print(user, word)
-        print(UserConverter(ctx, user))
-        return
+        user = UserConverter(ctx, user)
+        print(dir(user))
+
         if word is None:
-            top_5_words = self.thread_it(lambda: WordCounter.select()
-                .where(WordCounter.user_id==1)
+            top_5_words = await self.thread_it(lambda: WordCounter.select()
+                .where(WordCounter.user_id==user.id)
                 .order_by(WordCounter.count.desc())
                 .limit(5))
             response = '**Top 5 words for {}**'.format(user)
             for record in top_5_words:
                 response += '\n{} - {}'.format(record.word, record.count)
             await self.bot.say(response)
+        else:
+            record = await self.thread_it(lambda: WordCounter.select()
+                .where(WordCounter.user_id==user.id, word=word.lower())
+                .order_by(WordCounter.count.desc())
+                .get_or_none())
+            if record:
+                await self.bot.say('{} has said "{}" {} times.'.format(user.display_name, record.word, record.count))
+            else:
+                await self.bot.say('{} has never said the word "{}"'.format(user.display_name, word))
 
 
 
