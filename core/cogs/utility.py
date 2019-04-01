@@ -166,6 +166,19 @@ class Utility(StatefulCog):
             value='https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path'),
         )
         await self.bot.say(embed=embed)
+        
+    @command('wp_remove_nsfw_tag', aliases=['rmnsfw'])
+    @with_role(ZOLA_UTILS_ROLE)
+    async def wp_remove_nsfw_tag(self, *, wpid):
+        """
+        Remove "nsfw" tag from wallpaper.
+        """
+        wp = self.fire.collection('hoard/photos/wallpapers').document(wpid)
+        s = wp.get()
+        tags = s.get('tags')
+        tags.remove('nsfw')
+        wp.update({'tags': tags})
+        await self.bot.say('NSFW tag removed.')
 
 
 def setup(bot):
