@@ -192,7 +192,7 @@ class Utility(StatefulCog):
         Show how many times a user has said a certain word.
         """
         print(user, word)
-        user = UserConverter().convert(ctx, user)
+        user = UserConverter(ctx, ).convert()
         print(dir(user))
 
         if word is None:
