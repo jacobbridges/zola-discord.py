@@ -138,28 +138,26 @@ class Utility(StatefulCog):
         else:
             tag = 'random'
 
-        failed = False
-        try:
-            if tag == 'nsfw':
-                wp = await self.thread_it(lambda: random.choice(list(
-                    self.fire.collection('hoard/photos/wallpapers')
-                        .where('nsfw', '==', True)
-                        .get())))
-            elif tag == 'random':
-                wp = await self.thread_it(lambda: random.choice(list(
-                    self.fire.collection('hoard/photos/wallpapers').get())))
-            else:
-                wp = await self.thread_it(lambda: random.choice(list(
-                    self.fire.collection('hoard/photos/wallpapers')
-                        .where('tags', 'array_contains', tag)
-                        .where('nsfw', '==', False)
-                        .get())))
-        except IndexError:
-            failed = True
+        if tag == 'nsfw':
+            wp = await self.thread_it(lambda: list(
+                self.fire.collection('hoard/photos/wallpapers')
+                    .where('nsfw', '==', True)
+                    .get()))
+        elif tag == 'random':
+            wp = await self.thread_it(lambda: list(
+                self.fire.collection('hoard/photos/wallpapers').get()))
+        else:
+            wp = await self.thread_it(lambda: list(
+                self.fire.collection('hoard/photos/wallpapers')
+                    .where('tags', 'array_contains', tag)
+                    .where('nsfw', '==', False)
+                    .get()))
 
-        if failed:
+        if not wp:
             await self.bot.say('No wallpaper found with that tag.')
             return
+        else:
+            wp = random.choice(wp)
 
         image_url = 'https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path')
         embed = Embed()
