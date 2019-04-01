@@ -138,22 +138,25 @@ class Utility(StatefulCog):
         else:
             tag = 'random'
 
-        if tag == 'nsfw':
-            wp = await self.thread_it(lambda: random.choice(list(
-                self.fire.collection('hoard/photos/wallpapers')
-                    .where('nsfw', '==', True)
-                    .get())))
-        elif tag == 'random':
-            wp = await self.thread_it(lambda: random.choice(list(
-                self.fire.collection('hoard/photos/wallpapers')
-                    .where('nsfw', '==', False)
-                    .get())))
-        else:
-            wp = await self.thread_it(lambda: random.choice(list(
-                self.fire.collection('hoard/photos/wallpapers')
-                    .where('tags', 'array_contains', tag)
-                    .where('nsfw', '==', False)
-                    .get())))
+        try:
+            if tag == 'nsfw':
+                wp = await self.thread_it(lambda: random.choice(list(
+                    self.fire.collection('hoard/photos/wallpapers')
+                        .where('nsfw', '==', True)
+                        .get())))
+            elif tag == 'random':
+                wp = await self.thread_it(lambda: random.choice(list(
+                    self.fire.collection('hoard/photos/wallpapers').get())))
+            else:
+                wp = await self.thread_it(lambda: random.choice(list(
+                    self.fire.collection('hoard/photos/wallpapers')
+                        .where('tags', 'array_contains', tag)
+                        .where('nsfw', '==', False)
+                        .get())))
+        except IndexError:
+            await self.bot.say('No wallpaper found with that tag.')
+            return
+
         image_url = 'https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path')
         embed = Embed()
         embed.set_image(url=image_url)
@@ -176,8 +179,9 @@ class Utility(StatefulCog):
         wp = self.fire.collection('hoard/photos/wallpapers').document(wpid)
         s = wp.get()
         tags = s.get('tags')
+        if 'nsfw' not in tags: return
         tags.remove('nsfw')
-        wp.update({'tags': tags})
+        wp.update({'nsfw': False, 'tags': tags})
         await self.bot.say('NSFW tag removed.')
 
 
