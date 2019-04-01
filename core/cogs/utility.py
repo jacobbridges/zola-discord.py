@@ -127,22 +127,43 @@ class Utility(StatefulCog):
             .replace('@here', '@\u200bhere')\
             .replace(' ', '+')
         await self.bot.say('https://lmgtfy.com/?q={}'.format(search_terms))
-
-    @command(name='wptest')
-    async def wptest(self, *args, **kwargs):
+        
+    @command(name='wallpaper', aliases=['wallpapers', 'wp'])
+    async def wallpaper(self, *, tag: str):
         """
-        Test google firestore access
+        Explore wallpapers from the nivix hoard.
         """
-        wp = await self.thread_it(lambda: random.choice(list(
-            self.fire.collection('hoard').document('photos').collection('wallpapers')
-                .where('tags', 'array_contains', 'nsfw')
-                .get())))
+        if tag:
+            tag = tag.lower().strip()
+        else:
+            tag = 'random'
 
+        if tag == 'nsfw':
+            wp = await self.thread_it(lambda: random.choice(list(
+                self.fire.collection('hoard/photos/wallpapers')
+                    .where('nsfw', '==', True)
+                    .get())))
+        elif tag == 'random':
+            wp = await self.thread_it(lambda: random.choice(list(
+                self.fire.collection('hoard/photos/wallpapers')
+                    .where('nsfw', '==', False)
+                    .get())))
+        else:
+            wp = await self.thread_it(lambda: random.choice(list(
+                self.fire.collection('hoard/photos/wallpapers')
+                    .where('tags', 'array_contains', tag)
+                    .where('nsfw', '==', False)
+                    .get())))
+        image_url = 'https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path')
         embed = Embed()
-        embed.set_image(url='https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path'))
+        embed.set_image(url=image_url)
         embed.add_field(
-            name='WP Test',
-            value='Just a test',
+            name='Tags',
+            value=', '.join(wp.get('tags')),
+        )
+        embed.add_field(
+            name='Image URL',
+            value='https://storage.googleapis.com/space.jacobbridges.pw/' + wp.get('storage_path'),
         )
         await self.bot.say(embed=embed)
 
