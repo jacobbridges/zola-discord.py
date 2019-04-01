@@ -208,9 +208,9 @@ class Utility(StatefulCog):
             await self.bot.say(response)
         else:
             record = await self.thread_it(lambda: WordCounter.select()
-                .where((WordCounter.user_id==member.id) & (WordCounter.word==word.lower()))
+                .where((WordCounter.user_id == member.id) & (WordCounter.word == word.lower()))
                 .order_by(WordCounter.count.desc())
-                .get_or_none())
+                .limit(1))
             if record:
                 await self.bot.say('{} has said "{}" {} times.'.format(member.display_name, record.word, record.count))
             else:
