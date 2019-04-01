@@ -16,7 +16,7 @@ class Moderation(StatefulCog):
     """
     Useful commands for moderators.
     """
-    all_word_regex = re.compile(r"[\w'\-]")
+    all_word_regex = re.compile(r"[\w'\-]+")
 
     def __init__(self, bot: Bot):
         super(Moderation, self).__init__()
