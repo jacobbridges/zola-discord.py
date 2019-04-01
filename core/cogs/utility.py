@@ -194,7 +194,7 @@ class Utility(StatefulCog):
         try:
             member = UserConverter(ctx, user).convert()
         except:
-            self.bot.send_message(ctx.message.channel, 'Could not find user matching the name "{}"'.format(member))
+            self.bot.send_message(ctx.message.channel, 'Could not find user matching the name "{}"'.format(user))
 
         if word is None:
             top_5_words = await self.thread_it(lambda: WordCounter.select()
