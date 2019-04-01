@@ -138,6 +138,7 @@ class Utility(StatefulCog):
         else:
             tag = 'random'
 
+        failed = False
         try:
             if tag == 'nsfw':
                 wp = await self.thread_it(lambda: random.choice(list(
@@ -154,6 +155,9 @@ class Utility(StatefulCog):
                         .where('nsfw', '==', False)
                         .get())))
         except IndexError:
+            failed = True
+
+        if failed:
             await self.bot.say('No wallpaper found with that tag.')
             return
 
