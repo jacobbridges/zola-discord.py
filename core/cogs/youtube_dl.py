@@ -19,11 +19,14 @@ logger = logging.getLogger(__name__)
 
 
 def download(video_url, path):
-    video_stream = PyTube(video_url).streams \
-        .filter(progressive=True, file_extension='mp4') \
-        .order_by('resolution') \
-        .desc() \
-        .first()
+    try:
+        video_stream = PyTube(video_url).streams \
+            .filter(progressive=True, file_extension='mp4') \
+            .order_by('resolution') \
+            .desc() \
+            .first()
+    except:
+        video_stream = PyTube(video_url).streams.first()
     try:
         filename = video_stream.default_filename\
             .replace(' ', '_')\
