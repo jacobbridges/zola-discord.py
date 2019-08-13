@@ -1,6 +1,7 @@
 import os
 import logging
 from datetime import datetime
+from uuid import uuid4
 
 import pydash
 from discord.ext.commands import Bot, command, Context, group
@@ -23,9 +24,12 @@ def download(video_url, path):
         .order_by('resolution') \
         .desc() \
         .first()
-    filename = video_stream.default_filename\
-        .replace(' ', '_')\
-        .replace('.mp4', '')
+    try:
+        filename = video_stream.default_filename\
+            .replace(' ', '_')\
+            .replace('.mp4', '')
+    except KeyError:
+        filename = str(uuid4())
     video_stream.download(filename=filename, output_path=path)
     return filename + '.mp4'
 
