@@ -212,7 +212,7 @@ class Utility(StatefulCog):
                 .order_by(WordCounter.count.desc())
                 .limit(1))
             if record:
-                await self.bot.say('{} has said "{}" {} times.'.format(member.display_name, record.word, record.count))
+                await self.bot.say('{} has said "{}" {} times.'.format(member.display_name, record[0].word, record[0].count))
             else:
                 await self.bot.say('{} has never said the word "{}"'.format(member.display_name, word))
 

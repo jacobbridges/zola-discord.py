@@ -38,7 +38,6 @@ class Moderation(StatefulCog):
             await self.bot.send_message(message.channel, (' '.join([
                 message.author.mention,
                 random.choice([
-                    'I am Zola. There is no other like me.',
                     'Remember, you are being watched.',
                     'I am always awake. Except when I sleep.',
                     'That did not go unmonitored.',
@@ -47,7 +46,7 @@ class Moderation(StatefulCog):
                     'I never sleep.',
                 ]),
             ])))
-            await self.bot.send_message(dev_log, f'{message.author.name} has said fuck.')
+            await self.bot.send_message(dev_log, f'{message.author.name} said fuck..')
 
 
 def setup(bot):
