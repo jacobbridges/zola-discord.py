@@ -186,9 +186,9 @@ class Utility(StatefulCog):
         wp.update({'nsfw': False, 'tags': tags})
         await self.bot.say('NSFW tag removed.')
 
-    @command('zola_speak', aliases=['za'], pass_context=True)
+    @command('zola_speak', aliases=['zs'], pass_context=True)
     @with_role(ZOLA_UTILS_ROLE)
-    async def zola_speak(self, ctx: Context, channel, message):
+    async def zola_speak(self, ctx: Context, channel, *message):
         """
         Send a message as Zola to any channel.
         """
@@ -198,7 +198,7 @@ class Utility(StatefulCog):
             await self.bot.send_message(ctx.message.channel, 'Could not find channel "{}"'.format(channel))
             return
 
-        await self.bot.send_message(channel, message)
+        await self.bot.send_message(channel, u' '.join(message))
 
     @command('showme', aliases=['sm'], pass_context=True)
     async def showme(self, ctx: Context, user, word=None):
