@@ -12,7 +12,7 @@ idna==2.6
 idna-ssl
 multidict==4.1.0
 peewee==3.3.4
-pycares==2.3.0
+pycares==4.2.0
 pydash==4.5.0
 python-dateutil==2.7.2
 python-magic==0.4.15
